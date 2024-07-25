@@ -182,21 +182,18 @@ class HoneyPotBaseProtocol(insults.TerminalProtocol, TimeoutMixin):
 
             
     def lineReceived(self, line: bytes) -> None:
-	"""
-	Receive command line from attacker, convert to string, send to allCmd.py for processing.
-	"""
-	command_line = line.decode("utf-8").strip()  # Convert byte input to string
-	
-	
-	tokenizer = BlenderbotTokenizer.from_pretrained("facebook/blenderbot-400M-distill")
-	model = BlenderbotForConditionalGeneration.from_pretrained("facebook/blenderbot-400M-distill")
 
-	inputs = tokenizer([question], return_tensors="pt", padding=True, truncation=True, max_length=512)
+        command_line = line.decode("utf-8").strip()  # Convert byte input to string
+	
+	
+        tokenizer = BlenderbotTokenizer.from_pretrained("facebook/blenderbot-400M-distill")
+        model = BlenderbotForConditionalGeneration.from_pretrained("facebook/blenderbot-400M-distill")
+
+        inputs = tokenizer([question], return_tensors="pt", padding=True, truncation=True, max_length=512)
         reply_ids = model.generate(**inputs)
         response = tokenizer.batch_decode(reply_ids, skip_special_tokens=True)[0]
-
-	# Send the response back to the attacker's terminal
-	self.terminal.write(response.encode() + b'\n')
+        # Send the response back to the attacker's terminal
+        self.terminal.write(response.encode() + b'\n')
         
     
 
