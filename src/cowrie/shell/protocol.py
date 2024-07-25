@@ -184,8 +184,7 @@ class HoneyPotBaseProtocol(insults.TerminalProtocol, TimeoutMixin):
     def lineReceived(self, line: bytes) -> None:
 
         command_line = line.decode("utf-8").strip()  # Convert byte input to string
-	
-	
+        question = command_line
         tokenizer = BlenderbotTokenizer.from_pretrained("facebook/blenderbot-400M-distill")
         model = BlenderbotForConditionalGeneration.from_pretrained("facebook/blenderbot-400M-distill")
 
